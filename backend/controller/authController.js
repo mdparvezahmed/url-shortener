@@ -64,7 +64,7 @@ const Login = async (req, res) => {
 
 const Profile = async (req, res) => {
     try{
-        const user = { _id: req.user._id, email: req.user.email };
+        const user = { _id: req.user.id, email: req.user.email };
         res.status(200).json({ user });
     } catch (err) {
         res.status(500).json({ message: "Server error" });
