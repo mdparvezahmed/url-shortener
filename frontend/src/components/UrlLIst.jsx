@@ -55,11 +55,15 @@ const UrlList = ({ newUrl, onDelete, onUrlCountChange }) => {
             await deleteUrlApi(id, user.token);
             
             // Update local state
-            const newUrls = urls.filter((url) => url._id !== id);
-            setUrls(newUrls);
+            setUrls((prevUrls)=>{
+                const newUrls = prevUrls.filter(url => url._id !== id);
+
+                if (onUrlCountChange) {
+                    onUrlCountChange(newUrls.length);
+                }
+                return newUrls;
+            });
             
-            // Notify parent components
-            if (onUrlCountChange) onUrlCountChange(newUrls.length);
             if (onDelete) onDelete();
         } catch (error) {
             console.error('Delete error:', error);

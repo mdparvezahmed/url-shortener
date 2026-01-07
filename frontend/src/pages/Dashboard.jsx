@@ -28,9 +28,7 @@ const Dashboard = ()=>{
     setUrlCount(prevCount => prevCount + 1);
   }
 
-  const handleUrlDeleted = () => {
-    setUrlCount(prevCount => prevCount - 1);
-  }
+
 
   return (
     <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -40,7 +38,7 @@ const Dashboard = ()=>{
       </div>
       
       <CreateUrlForm onUrlCreated={handleUrlCreated} urlCount={urlCount} />
-      <UrlList newUrl={newUrl} onDelete={handleUrlDeleted} onUrlCountChange={setUrlCount} />
+      <UrlList newUrl={newUrl} onUrlCountChange={setUrlCount} />
     </div>
   );
 }
