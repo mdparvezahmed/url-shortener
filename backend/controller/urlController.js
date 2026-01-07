@@ -53,7 +53,8 @@ const shortenUrl = async (req, res) => {
         
         res.status(201).json({
             _id: newUrl._id,
-            shortUrl: `${process.env.BASE_URL}/${shortcode}`,
+            //clint_url used here
+            shortUrl: `${process.env.CLIENT_URL}/${shortcode}`,
             originalUrl: newUrl.originalUrl,
             clicks: newUrl.clicks,
             createdAt: newUrl.createdAt
@@ -67,7 +68,7 @@ const shortenUrl = async (req, res) => {
 const getUrls = async (req, res) => {
     const urls = await Url.find({ user: req.user.id }).sort({ createdAt: -1 });
 
-    const baseUrl = `${process.env.BASE_URL}/`;
+    const baseUrl = `${process.env.CLIENT_URL}/`;
 
     const response = urls.map(url => ({
         _id: url._id,
@@ -92,6 +93,21 @@ const deleteUrl = async (req, res) => {
     res.status(200).json({ message: "URL deleted successfully" });
 
 }
+const getUrlByShortcode =async (req, res) =>{
+    try{
+        const url = await Url.findOneAndUpdate(
+            {shortcode: req.params.shortcode},
+            {$inc: {clicks: 1}},
+            {new: true}
+        );
+        if(!url){
+            return res.status(404).json({message: "URL not found"});
+        }
+        res.status(200).json({originalUrl: url.originalUrl});
+    }catch(err){
+        res.status(500).json({message: "Server error"});
+    }
+}
 
 
-module.exports = { shortenUrl, getUrls, deleteUrl };
+module.exports = { shortenUrl, getUrls, deleteUrl, getUrlByShortcode };

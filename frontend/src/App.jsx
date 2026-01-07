@@ -8,6 +8,7 @@ import Dashboard from './pages/Dashboard';
 import LoginModal from './components/LoginModal';
 import RegisterModal from './components/RegisterModal';
 import ProtectedRoute from './components/ProtectedRoute';
+import RedirectPage from './pages/RedirectPage';
 
 
 function AppContent() {
@@ -45,6 +46,8 @@ function AppContent() {
               </ProtectedRoute>
             }
           />
+          {/* Redirect route for shortcodes */}
+          <Route path="/:shortcode" element={<RedirectPage />} />
         </Routes>
         
         {/* Authentication modals */}

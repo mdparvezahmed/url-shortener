@@ -39,3 +39,10 @@ export const shortenUrl = async (originalUrl, token) => {
 export const deleteUrl = async (id, token) => {
   await axios.delete(`${baseUrl}api/url/${id}`, getAuthConfig(token));
 };
+
+export const getOriginalUrl = async (shortcode) => {
+    const { data } = await axios.get(`${baseUrl}api/url/redirect/${shortcode}`);
+    return data;
+}
+
+
