@@ -1,3 +1,4 @@
+const e = require('express');
 const mongoose = require('mongoose');
 
 
@@ -10,6 +11,11 @@ const userSchema = new mongoose.Schema({
     password:{
         type: String,
         required: true
+    },
+    type:{
+        type: String,
+        enum: ['free', 'premium'],
+        default: 'free'
     }
 }, {timestamps: true});
 

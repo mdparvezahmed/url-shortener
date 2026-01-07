@@ -4,13 +4,14 @@ const connectDB = require("./config/db");
 const authRouter = require("./router/authRoutes");
 const urlRouter = require("./router/urlRoutes");
 const shortUrlRouter = require("./router/shortUrlRoutes");
-
+const cors = require("cors");
 
 connectDB();
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
+app.use(cors());
 app.use(express.json());
 
 

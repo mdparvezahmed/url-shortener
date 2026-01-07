@@ -19,7 +19,23 @@ const Register = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password, 10);
         const newUser = new User({ email, password: hashedPassword });
         await newUser.save();
-        res.status(201).json({ message: "User registered successfully" });
+
+        const token = jwt.sign(
+            {
+                id: newUser._id,
+                type: newUser.type
+            },
+            process.env.JWT_SECRET,
+            { expiresIn: '30d' }
+        );
+
+        res.status(201).json({
+            _id: newUser._id,
+            email: newUser.email,
+            type: newUser.type,
+            token: token,
+            message: "User registered successfully"
+        });
 
 
     } catch (err) {
@@ -46,11 +62,12 @@ const Login = async (req, res) => {
 
         const token = jwt.sign({
             id: user._id,
-            email: user.email
+            email: user.email,
+            type: user.type
 
         },
             process.env.JWT_SECRET,
-            { expiresIn: "1d" }
+            { expiresIn: "30d" }
 
         );
 
@@ -63,7 +80,7 @@ const Login = async (req, res) => {
 }
 
 const Profile = async (req, res) => {
-    try{
+    try {
         const user = { _id: req.user.id, email: req.user.email };
         res.status(200).json({ user });
     } catch (err) {
@@ -74,4 +91,4 @@ const Profile = async (req, res) => {
 
 
 
-module.exports = { Register, Login, Profile};
+module.exports = { Register, Login, Profile };
